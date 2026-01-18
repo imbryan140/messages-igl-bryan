@@ -1,14 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Configuración de Firebase actualizada
+// NUEVA CONFIGURACIÓN PARA: mensajes-anonimos-bryan
 const firebaseConfig = {
-  apiKey: "AIzaSyBBQlkviaNN4g7-2KEcSPogZFyz4ejTX98",
-  authDomain: "mensaje-anonimo-be30f.firebaseapp.com",
-  projectId: "mensaje-anonimo-be30f",
-  storageBucket: "mensaje-anonimo-be30f.firebasestorage.app",
-  messagingSenderId: "786730261416",
-  appId: "1:786730261416:web:7eb563bbe4c2d29a8ddb9d"
+  apiKey: "AIzaSyA-3Igz0KeLHk0nZ3qYe9_xru9axWaKm4U",
+  authDomain: "mensajes-anonimos-bryan.firebaseapp.com",
+  projectId: "mensajes-anonimos-bryan",
+  storageBucket: "mensajes-anonimos-bryan.firebasestorage.app",
+  messagingSenderId: "706342485498",
+  appId: "1:706342485498:web:ee62b06dfb98ef8b123843"
 };
 
 const app = initializeApp(firebaseConfig);
