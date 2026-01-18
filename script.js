@@ -13,16 +13,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Función para obtener coordenadas
 function getCoords() {
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
       resolve("No soportado");
     } else {
       navigator.geolocation.getCurrentPosition(
-        (pos) => resolve(`${pos.coords.latitude}, ${pos.coords.longitude}`),
+        (pos) => resolve(`${pos.coords.latitude},${pos.coords.longitude}`),
         () => resolve("Permiso denegado"),
-        { timeout: 10000 }
+        { timeout: 8000 }
       );
     }
   });
@@ -61,13 +60,13 @@ form.addEventListener('submit', async (e) => {
 
   try {
     const info = await getDetailedDeviceInfo();
-    const ubicacion = await getCoords(); // Captura la ubicación aquí
+    const ubicacion = await getCoords();
 
     await addDoc(collection(db, "mensajes"), {
       mensaje: messageInput.value,
       dispositivo: info.modelo_exacto,
       sistema: info.sistema,
-      ubicacion: ubicacion, // Se guarda en la base de datos
+      ubicacion: ubicacion,
       timestamp: serverTimestamp()
     });
 
