@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// Configuración de Firebase actualizada
 const firebaseConfig = {
   apiKey: "AIzaSyBBQlkviaNN4g7-2KEcSPogZFyz4ejTX98",
   authDomain: "mensaje-anonimo-be30f.firebaseapp.com",
